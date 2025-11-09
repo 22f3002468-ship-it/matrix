@@ -1,0 +1,42 @@
+name: Multi-Platform Matrix Build (c5001d9)
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    # Matrix strategy with 3 variants — Node.js versions
+    strategy:
+      matrix:
+        node-version: [14, 16, 18]
+    
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Matrix identifier step (required)
+      - name: matrix-c5001d9
+        run: echo "Building for Node.js version ${{ matrix.node-version }}"
+
+      # Set up Node.js version from matrix
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      # Simulate build process
+      - name: Run build
+        run: |
+          echo "Simulating build for Node.js ${{ matrix.node-version }}"
+          echo "Build output for Node.js version ${{ matrix.node-version }}" > build_output.txt
+
+      # Upload build artifact with unique prefix
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-c5001d9-v${{ matrix.node-version }}
+          path: build_output.txt
